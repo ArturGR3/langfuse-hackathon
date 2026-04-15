@@ -44,51 +44,34 @@ langfuse-hackathon/
 ## Task 1: Bootstrap Python Backend
 
 **Files:**
-- Create: `backend/requirements.txt`
+- Create: `backend/pyproject.toml` (via uv init)
 - Create: `backend/.env.example`
 - Create: `backend/main.py`
 
-- [ ] **Step 1: Create backend directory and requirements**
+- [ ] **Step 1: Create backend directory and init uv project**
 
 ```bash
 mkdir -p backend/services backend/tests
-cat > backend/requirements.txt << 'EOF'
-fastapi==0.115.0
-uvicorn==0.30.6
-httpx==0.27.2
-openai==1.51.0
-langfuse==2.53.0
-pydantic==2.9.2
-python-dotenv==1.0.1
-python-multipart==0.0.12
-pytest==8.3.3
-pytest-asyncio==0.24.0
-EOF
+cd backend
+uv init --no-readme
+uv add fastapi uvicorn httpx openai "langfuse>=2.53.0" pydantic python-dotenv python-multipart
+uv add --dev pytest pytest-asyncio
 ```
 
 - [ ] **Step 2: Create .env.example**
 
 ```bash
-cat > backend/.env.example << 'EOF'
+cat > .env.example << 'EOF'
 OPENAI_API_KEY=sk-...
 LANGFUSE_PUBLIC_KEY=pk-lf-...
 LANGFUSE_SECRET_KEY=sk-lf-...
 LANGFUSE_HOST=https://cloud.langfuse.com
 OLLAMA_BASE_URL=http://localhost:11434
 EOF
-cp backend/.env.example backend/.env
+cp .env.example .env
 ```
 
 Fill in real values in `backend/.env`.
-
-- [ ] **Step 3: Install dependencies**
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
 
 - [ ] **Step 4: Create minimal FastAPI app**
 
@@ -114,14 +97,14 @@ def health():
     return {"status": "ok"}
 ```
 
-- [ ] **Step 5: Verify server starts**
+- [ ] **Step 4: Verify server starts**
 
 ```bash
 cd backend
-uvicorn main:app --reload
+uv run uvicorn main:app --reload
 ```
 
-Expected: `Uvicorn running on http://127.0.0.1:8000`
+Expected: `Uvicorn running on http://127.0.0.1:8000`. Ctrl+C to stop.
 
 Visit `http://localhost:8000/health` → `{"status": "ok"}`
 
@@ -213,8 +196,7 @@ def test_multiple_occurrences():
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd backend
-pytest tests/test_scrubber.py -v
+cd backend\nuv run pytest tests/test_scrubber.py -v
 ```
 
 Expected: ERROR — `ModuleNotFoundError: No module named 'services.scrubber'`
@@ -237,8 +219,7 @@ def scrub_pii(text: str, pii_list: list[str]) -> str:
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-cd backend
-pytest tests/test_scrubber.py -v
+cd backend\nuv run pytest tests/test_scrubber.py -v
 ```
 
 Expected: 5 passed
@@ -295,8 +276,7 @@ async def test_raises_on_http_error():
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd backend
-pytest tests/test_ollama.py -v
+cd backend\nuv run pytest tests/test_ollama.py -v
 ```
 
 Expected: ERROR — `ModuleNotFoundError: No module named 'services.ollama'`
@@ -349,8 +329,7 @@ async def call_gemma4(image_base64: str) -> OcrPiiResult:
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-cd backend
-pytest tests/test_ollama.py -v
+cd backend\nuv run pytest tests/test_ollama.py -v
 ```
 
 Expected: 2 passed
@@ -405,8 +384,7 @@ async def test_returns_translation_result():
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd backend
-pytest tests/test_openai_service.py -v
+cd backend\nuv run pytest tests/test_openai_service.py -v
 ```
 
 Expected: ERROR — `ModuleNotFoundError: No module named 'services.openai_service'`
@@ -444,8 +422,7 @@ async def call_openai(clean_text: str) -> TranslationResult:
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-cd backend
-pytest tests/test_openai_service.py -v
+cd backend\nuv run pytest tests/test_openai_service.py -v
 ```
 
 Expected: 1 passed
@@ -882,8 +859,7 @@ git commit -m "feat: add home and result screens"
 - [ ] **Step 1: Run full backend test suite**
 
 ```bash
-cd backend
-pytest -v
+cd backend\nuv run pytest -v
 ```
 
 Expected:
