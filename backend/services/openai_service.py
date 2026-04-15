@@ -1,6 +1,6 @@
 # backend/services/openai_service.py
 import os
-from openai import OpenAI
+from langfuse.openai import OpenAI   # langfuse drop-in wrapper for auto-tracing
 from models import TranslationResult
 
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", "dummy-key-for-testing"))
