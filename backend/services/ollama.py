@@ -3,7 +3,7 @@ import httpx
 from models import OcrPiiResult
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-MODEL = "gemma3:4b"  # switch to gemma4 when available in Ollama
+MODEL = "gemma4"
 
 PROMPT = """You are a document processing assistant. Given this document image:
 1. Extract all visible text exactly as written.

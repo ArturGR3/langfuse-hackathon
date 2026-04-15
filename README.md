@@ -103,7 +103,7 @@ OpenAI and Langfuse receive **zero personally identifiable information**.
 
 Every document processed generates a Langfuse trace with two generations:
 
-1. `gemma3-ocr-pii` — the local OCR+PII extraction step (input: image, output: raw text + PII list)
+1. `gemma4-ocr-pii` — the local OCR+PII extraction step (input: image, output: raw text + PII list)
 2. `openai-translate-actions` — the cloud translation step (input: redacted text, output: structured result)
 
 This gives full visibility into latency, token usage, and output quality across the pipeline — without ever logging sensitive user data.
@@ -138,7 +138,7 @@ langfuse-hackathon/
 
 ## Running Locally
 
-**Prerequisites:** Ollama installed, `gemma3:4b` pulled, OpenAI API key, Langfuse account.
+**Prerequisites:** Ollama installed, `gemma4:4b` pulled, OpenAI API key, Langfuse account.
 
 ```bash
 # Start Ollama (accessible on your local network)

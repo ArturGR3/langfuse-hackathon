@@ -25,12 +25,20 @@ export default function HomeScreen() {
 
     setLoading(true);
     try {
+      const asset = picked.assets[0];
       const formData = new FormData();
-      formData.append('file', {
-        uri: picked.assets[0].uri,
-        name: 'document.jpg',
-        type: 'image/jpeg',
-      } as any);
+
+      if (asset.file) {
+        // Web: expo-image-picker provides a real File object
+        formData.append('file', asset.file);
+      } else {
+        // Native: use URI-based object
+        formData.append('file', {
+          uri: asset.uri,
+          name: 'document.jpg',
+          type: 'image/jpeg',
+        } as any);
+      }
 
       const response = await fetch(`${API_BASE}/process`, {
         method: 'POST',
